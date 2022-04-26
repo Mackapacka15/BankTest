@@ -17,6 +17,7 @@ namespace BankTest
         }
         public void Interacct()
         {
+            Console.WriteLine($"Welcome {name}");
             Console.WriteLine("What would you like to do? (Use the corresponding number)");
             Console.WriteLine("1: Add an account");
             Console.WriteLine("2: Remove an account");
