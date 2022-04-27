@@ -1,23 +1,25 @@
 using System;
+using System.Text.Json;
 
 namespace BankTest
 {
     public class User
     {
-        string name;
+        string JsonString { get; set; }
+        string Name { get; set; }
         List<Account> accounts = new List<Account>();
 
         public User()
         {
             Console.WriteLine("Enter your name");
-            name = Console.ReadLine();
+            Name = Console.ReadLine();
 
             Console.WriteLine("What should your first account be called?");
             accounts.Add(new Account(Console.ReadLine()));
         }
         public void Interacct()
         {
-            Console.WriteLine($"Welcome {name}");
+            Console.WriteLine($"Welcome {Name}");
             Console.WriteLine("What would you like to do? (Use the corresponding number)");
             Console.WriteLine("1: Add an account");
             Console.WriteLine("2: Remove an account");
@@ -25,7 +27,8 @@ namespace BankTest
             Console.WriteLine("4: Withdraw from an account");
             Console.WriteLine("5: Check balance of an account");
             Console.WriteLine("6: Rename an account");
-            Console.WriteLine("7: Exit");
+            Console.WriteLine("7: Moove funds");
+            Console.WriteLine("8: Exit");
             string choice = Console.ReadLine();
             switch (choice)
             {
@@ -48,6 +51,9 @@ namespace BankTest
                     RenameAccount();
                     break;
                 case "7":
+                    MoveFunds();
+                    break;
+                case "8":
                     Bank.Logout();
                     break;
                 default:
@@ -57,7 +63,7 @@ namespace BankTest
         }
         public string GetName()
         {
-            return name;
+            return Name;
         }
 
         public void AddAccount()
@@ -155,6 +161,53 @@ namespace BankTest
                 }
             }
         }
+        public void MoveFunds()
+        {
+            if (HasAccounts())
+            {
+                Console.WriteLine("Which account would you like to move funds from?");
+                for (int i = 0; i < accounts.Count; i++)
+                {
+                    Console.WriteLine(i + ": " + accounts[i].GetAccountName());
+                }
+                int fromAccount = IntMaker(Console.ReadLine());
+                if (fromAccount != -1)
+                {
+                    Console.WriteLine("Which account would you like to move funds to?");
+                    for (int i = 0; i < accounts.Count; i++)
+                    {
+                        Console.WriteLine(i + ": " + accounts[i].GetAccountName());
+                    }
+                    int toAccount = IntMaker(Console.ReadLine());
+                    if (toAccount != -1 && fromAccount != toAccount)
+                    {
+
+                        Console.WriteLine("How much would you like to move?");
+                        int amount = IntMaker(Console.ReadLine());
+                        if (amount != -1)
+                        {
+                            if (accounts[fromAccount].GetBalance() >= amount)
+                            {
+                                accounts[fromAccount].Withdraw(amount);
+                                accounts[toAccount].Deposit(amount);
+                                Console.WriteLine("Transfer of " + amount + " from " + accounts[fromAccount].GetAccountName() + " to " + accounts[toAccount].GetAccountName() + " is successful.");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid input no move made.");
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input no funds moved.");
+                }
+
+
+            }
+        }
+
         private bool HasAccounts()
         {
             if (accounts.Count != 0)
@@ -185,6 +238,15 @@ namespace BankTest
                 Console.WriteLine($"Invalid input, No account with number {useAccount}.");
                 return -1;
             }
+        }
+        public void Load()
+        {
+            accounts = JsonSerializer.Deserialize<List<Account>>(JsonString);
+        }
+        public void Save()
+        {
+            JsonString = JsonSerializer.Serialize(accounts);
+
         }
         public int IntMaker(string input)
         {

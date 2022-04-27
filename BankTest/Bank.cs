@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json;
 
 namespace BankTest
 {
@@ -74,6 +75,19 @@ namespace BankTest
                     Console.WriteLine("That was not a valid choice");
                 }
             }
+        }
+        static public void Load(){
+            string json = System.IO.File.ReadAllText(@"Users.json");
+            users = JsonSerializer.Deserialize<List<User>>(json);
+            foreach (User u in users)
+            {
+               u.Load();
+            }
+        }
+        static public void Save()
+        {
+            string jsonstring = JsonSerializer.Serialize(users);
+            System.IO.File.WriteAllText(@"Users.json", jsonstring);
         }
 
         static public int IntMaker(string input)
