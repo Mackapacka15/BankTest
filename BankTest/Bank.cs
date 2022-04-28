@@ -8,6 +8,11 @@ namespace BankTest
         static List<User> users = new List<User>();
         static User currentUser;
 
+        static Bank()
+        {
+            Load();
+        }
+
         static public bool Update()
         {
             if (currentUser != null)
@@ -30,18 +35,20 @@ namespace BankTest
                         ManageUser();
                         break;
                     case "3":
+                        Save();
                         return false;
                     default:
                         Console.WriteLine("That was not a valid choice");
                         break;
                 }
             }
+            Save();
             return true;
         }
 
         static public void CreateUser()
         {
-            User u = new User();
+            User u = new User(true);
             users.Add(u);
             currentUser = u;
         }
@@ -76,17 +83,17 @@ namespace BankTest
                 }
             }
         }
-        static public void Load(){
+        static public void Load()
+        {
             string json = System.IO.File.ReadAllText(@"Users.json");
-            users = JsonSerializer.Deserialize<List<User>>(json);
-            foreach (User u in users)
+            if (!string.IsNullOrEmpty(json.Trim()))
             {
-               u.Load();
+                users = JsonSerializer.Deserialize<List<User>>(json);
             }
         }
         static public void Save()
         {
-            string jsonstring = JsonSerializer.Serialize(users);
+            string jsonstring = JsonSerializer.Serialize<List<User>>(users);
             System.IO.File.WriteAllText(@"Users.json", jsonstring);
         }
 

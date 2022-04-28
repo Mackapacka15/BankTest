@@ -4,40 +4,40 @@ namespace BankTest
 {
     public class Account
     {
-        string accountName;
-        int balance = 0;
+        public string AccountName { get; set; }
+        public int Balance { get; set; } = 0;
 
         public Account(string accountNamein)
         {
             if (string.IsNullOrWhiteSpace(accountNamein))
             {
-                accountName = "Unnamed Account";
+                AccountName = "Unnamed Account";
             }
             else
             {
-                accountName = accountNamein;
+                AccountName = accountNamein;
             }
         }
 
         public void Deposit(int amount)
         {
-            balance += amount;
+            Balance += amount;
         }
         public void Withdraw(int amount)
         {
-            balance -= amount;
+            Balance -= amount;
         }
         public int GetBalance()
         {
-            return balance;
+            return Balance;
         }
         public string GetAccountName()
         {
-            return accountName;
+            return AccountName;
         }
         public void SetAccountName(string newName)
         {
-            accountName = newName;
+            AccountName = newName;
         }
     }
 }

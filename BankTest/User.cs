@@ -5,17 +5,19 @@ namespace BankTest
 {
     public class User
     {
-        string JsonString { get; set; }
-        string Name { get; set; }
-        List<Account> accounts = new List<Account>();
+        public string Name { get; set; }
+        public List<Account> Accounts { get; set; } = new List<Account>();
 
-        public User()
+        public User(bool askForName = false)
         {
-            Console.WriteLine("Enter your name");
-            Name = Console.ReadLine();
+            if (askForName)
+            {
+                Console.WriteLine("Enter your name");
+                Name = Console.ReadLine();
 
-            Console.WriteLine("What should your first account be called?");
-            accounts.Add(new Account(Console.ReadLine()));
+                Console.WriteLine("What should your first account be called?");
+                Accounts.Add(new Account(Console.ReadLine()));
+            }
         }
         public void Interacct()
         {
@@ -69,7 +71,7 @@ namespace BankTest
         public void AddAccount()
         {
             Console.WriteLine("What should this account be called?");
-            accounts.Add(new Account(Console.ReadLine()));
+            Accounts.Add(new Account(Console.ReadLine()));
 
         }
         public void RemoveAccount()
@@ -79,8 +81,8 @@ namespace BankTest
                 int useAccount = WichAccount();
                 if (useAccount != -1)
                 {
-                    Console.WriteLine("Account " + accounts[useAccount].GetAccountName() + " is removed.");
-                    accounts.RemoveAt(useAccount);
+                    Console.WriteLine("Account " + Accounts[useAccount].GetAccountName() + " is removed.");
+                    Accounts.RemoveAt(useAccount);
                 }
                 else
                 {
@@ -99,8 +101,8 @@ namespace BankTest
                     int amount = IntMaker(Console.ReadLine());
                     if (amount != -1)
                     {
-                        accounts[useAccount].Deposit(amount);
-                        Console.WriteLine("Deposit of " + amount + " to " + accounts[useAccount].GetAccountName() + " successful.");
+                        Accounts[useAccount].Deposit(amount);
+                        Console.WriteLine("Deposit of " + amount + " to " + Accounts[useAccount].GetAccountName() + " successful.");
                     }
                     else
                     {
@@ -121,10 +123,10 @@ namespace BankTest
                     int amount = IntMaker(Console.ReadLine());
                     if (amount != -1)
                     {
-                        if (accounts[useAccount].GetBalance() >= amount)
+                        if (Accounts[useAccount].GetBalance() >= amount)
                         {
-                            accounts[useAccount].Withdraw(amount);
-                            Console.WriteLine("Withdraw of " + amount + " from " + accounts[useAccount].GetAccountName() + " successful.");
+                            Accounts[useAccount].Withdraw(amount);
+                            Console.WriteLine("Withdraw of " + amount + " from " + Accounts[useAccount].GetAccountName() + " successful.");
                         }
                         else
                         {
@@ -144,7 +146,7 @@ namespace BankTest
             int useAccount = WichAccount();
             if (useAccount != -1)
             {
-                Console.WriteLine("Balance of " + accounts[useAccount].GetAccountName() + " is " + accounts[useAccount].GetBalance());
+                Console.WriteLine("Balance of " + Accounts[useAccount].GetAccountName() + " is " + Accounts[useAccount].GetBalance());
             }
         }
         public void RenameAccount()
@@ -154,10 +156,10 @@ namespace BankTest
                 int useAccount = WichAccount();
                 if (useAccount != -1)
                 {
-                    string oldName = accounts[useAccount].GetAccountName();
+                    string oldName = Accounts[useAccount].GetAccountName();
                     Console.WriteLine("What should the new name be?");
-                    accounts[useAccount].SetAccountName(Console.ReadLine());
-                    Console.WriteLine($"Account {oldName} is renamed to {accounts[useAccount].GetAccountName()}");
+                    Accounts[useAccount].SetAccountName(Console.ReadLine());
+                    Console.WriteLine($"Account {oldName} is renamed to {Accounts[useAccount].GetAccountName()}");
                 }
             }
         }
@@ -166,17 +168,17 @@ namespace BankTest
             if (HasAccounts())
             {
                 Console.WriteLine("Which account would you like to move funds from?");
-                for (int i = 0; i < accounts.Count; i++)
+                for (int i = 0; i < Accounts.Count; i++)
                 {
-                    Console.WriteLine(i + ": " + accounts[i].GetAccountName());
+                    Console.WriteLine(i + ": " + Accounts[i].GetAccountName());
                 }
                 int fromAccount = IntMaker(Console.ReadLine());
                 if (fromAccount != -1)
                 {
                     Console.WriteLine("Which account would you like to move funds to?");
-                    for (int i = 0; i < accounts.Count; i++)
+                    for (int i = 0; i < Accounts.Count; i++)
                     {
-                        Console.WriteLine(i + ": " + accounts[i].GetAccountName());
+                        Console.WriteLine(i + ": " + Accounts[i].GetAccountName());
                     }
                     int toAccount = IntMaker(Console.ReadLine());
                     if (toAccount != -1 && fromAccount != toAccount)
@@ -186,11 +188,11 @@ namespace BankTest
                         int amount = IntMaker(Console.ReadLine());
                         if (amount != -1)
                         {
-                            if (accounts[fromAccount].GetBalance() >= amount)
+                            if (Accounts[fromAccount].GetBalance() >= amount)
                             {
-                                accounts[fromAccount].Withdraw(amount);
-                                accounts[toAccount].Deposit(amount);
-                                Console.WriteLine("Transfer of " + amount + " from " + accounts[fromAccount].GetAccountName() + " to " + accounts[toAccount].GetAccountName() + " is successful.");
+                                Accounts[fromAccount].Withdraw(amount);
+                                Accounts[toAccount].Deposit(amount);
+                                Console.WriteLine("Transfer of " + amount + " from " + Accounts[fromAccount].GetAccountName() + " to " + Accounts[toAccount].GetAccountName() + " is successful.");
                             }
                         }
                         else
@@ -210,7 +212,7 @@ namespace BankTest
 
         private bool HasAccounts()
         {
-            if (accounts.Count != 0)
+            if (Accounts.Count != 0)
             {
                 return true;
             }
@@ -224,12 +226,12 @@ namespace BankTest
         {
             Console.WriteLine("Which account would you like to use?");
 
-            for (int i = 0; i < accounts.Count; i++)
+            for (int i = 0; i < Accounts.Count; i++)
             {
-                Console.WriteLine(i + ": " + accounts[i].GetAccountName());
+                Console.WriteLine(i + ": " + Accounts[i].GetAccountName());
             }
             int useAccount = IntMaker(Console.ReadLine());
-            if (useAccount < accounts.Count)
+            if (useAccount < Accounts.Count)
             {
                 return useAccount;
             }
@@ -238,15 +240,6 @@ namespace BankTest
                 Console.WriteLine($"Invalid input, No account with number {useAccount}.");
                 return -1;
             }
-        }
-        public void Load()
-        {
-            accounts = JsonSerializer.Deserialize<List<Account>>(JsonString);
-        }
-        public void Save()
-        {
-            JsonString = JsonSerializer.Serialize(accounts);
-
         }
         public int IntMaker(string input)
         {
