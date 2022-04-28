@@ -15,7 +15,7 @@ namespace BankTest
                 Console.WriteLine("Enter your name");
                 Name = Console.ReadLine();
 
-                Console.WriteLine("What should your first account be called?");
+                Console.WriteLine("What should your account be called?");
                 Accounts.Add(new Account(Console.ReadLine()));
             }
         }
@@ -199,6 +199,10 @@ namespace BankTest
                         {
                             Console.WriteLine("Invalid input no move made.");
                         }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid input no move made.");
                     }
                 }
                 else

@@ -65,12 +65,12 @@ namespace BankTest
             }
             else
             {
+                Console.WriteLine("Which user would you like to manage? (Use the corresponding number)");
                 for (int i = 0; i < users.Count; i++)
                 {
                     Console.WriteLine(i + ": " + users[i].GetName());
                 }
 
-                Console.WriteLine("Which user would you like to manage? (Use the corresponding number)");
                 string choice = Console.ReadLine();
                 int index = IntMaker(choice);
                 if (index != -1 && index < users.Count)
@@ -88,7 +88,7 @@ namespace BankTest
             string json = System.IO.File.ReadAllText(@"Users.json");
             if (!string.IsNullOrEmpty(json.Trim()))
             {
-                users = JsonSerializer.Deserialize<List<User>>(json);
+                //users = JsonSerializer.Deserialize<List<User>>(json);
             }
         }
         static public void Save()
