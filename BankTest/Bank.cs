@@ -88,7 +88,7 @@ namespace BankTest
             string json = System.IO.File.ReadAllText(@"Users.json");
             if (!string.IsNullOrEmpty(json.Trim()))
             {
-                //users = JsonSerializer.Deserialize<List<User>>(json);
+                users = JsonSerializer.Deserialize<List<User>>(json);
             }
         }
         static public void Save()

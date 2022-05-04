@@ -7,7 +7,12 @@ namespace BankTest
         public string AccountName { get; set; }
         public int Balance { get; set; } = 0;
 
-        public Account(string accountNamein)
+        public Account()
+        {
+
+        }
+
+        public Account(string accountNamein = "")
         {
             if (string.IsNullOrWhiteSpace(accountNamein))
             {

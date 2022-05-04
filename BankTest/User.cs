@@ -8,6 +8,11 @@ namespace BankTest
         public string Name { get; set; }
         public List<Account> Accounts { get; set; } = new List<Account>();
 
+        public User()
+        {
+
+        }
+
         public User(bool askForName = false)
         {
             if (askForName)

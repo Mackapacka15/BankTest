@@ -1,1 +1,15 @@
-[{"Name":"MArkus","Accounts":[{"AccountName":"Hmm","Balance":0},{"AccountName":"BCD","Balance":0}]}]
+[
+    {
+        "Name": "MArkus",
+        "Accounts": [
+            {
+                "AccountName": "Hmm",
+                "Balance": 0
+            },
+            {
+                "AccountName": "BCD",
+                "Balance": 0
+            }
+        ]
+    }
+]
